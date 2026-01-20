@@ -5,9 +5,10 @@ interface ProjectListProps {
   projects: Project[];
   onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
+  onNewMeeting: (projectId: string) => void;
 }
 
-export function ProjectList({ projects, onToggleStatus, onDelete }: ProjectListProps) {
+export function ProjectList({ projects, onToggleStatus, onDelete, onNewMeeting }: ProjectListProps) {
   if (projects.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500">
@@ -24,6 +25,7 @@ export function ProjectList({ projects, onToggleStatus, onDelete }: ProjectListP
           project={project}
           onToggleStatus={onToggleStatus}
           onDelete={onDelete}
+          onNewMeeting={onNewMeeting}
         />
       ))}
     </div>

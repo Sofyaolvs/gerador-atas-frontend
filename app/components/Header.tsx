@@ -14,7 +14,7 @@ export function Header() {
               <StickyNote className="w-6 h-6" />
             </div>
             <div>
-              <h1 className="text-xl font-semibold">Gerador de Atas de reunião</h1>
+              <h1 className="text-xl font-semibold">Gerador de Atas</h1>
             </div>
           </div>
         </div>

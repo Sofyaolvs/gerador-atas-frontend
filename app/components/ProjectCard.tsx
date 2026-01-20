@@ -8,9 +8,10 @@ interface ProjectCardProps {
   project: Project;
   onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
+  onNewMeeting: (projectId: string) => void;
 }
 
-export function ProjectCard({ project, onToggleStatus, onDelete }: ProjectCardProps) {
+export function ProjectCard({ project, onToggleStatus, onDelete, onNewMeeting }: ProjectCardProps) {
   const menuItems = [
     {
       label: project.isActive ? "Desativar" : "Ativar",
@@ -45,7 +46,7 @@ export function ProjectCard({ project, onToggleStatus, onDelete }: ProjectCardPr
           size="sm"
           leftIcon={<Plus className="w-4 h-4" />}
           className="h-10"
-          onClick={() => console.log(project.id)}
+          onClick={() => onNewMeeting(project.id)}
         >
           Nova reunião
         </Button>
