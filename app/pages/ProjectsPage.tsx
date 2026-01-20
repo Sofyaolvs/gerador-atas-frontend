@@ -128,6 +128,7 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
       <Modal open={isMeetingModalOpen} onClose={() => setIsMeetingModalOpen(false)}>
         <Form
           type="meeting"
+          projects={projects}
           selectedProjectId={selectedProjectForMeeting}
           onClose={() => setIsMeetingModalOpen(false)}
           onSubmit={handleCreateMeeting}
