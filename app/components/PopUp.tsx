@@ -13,11 +13,11 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 overflow-y-auto"
       onClick={onClose}
     >
       <div
-        className="bg-slate-100 border-slate-600 border-2 rounded-2xl p-6 w-full max-w-lg mx-4"
+        className="bg-slate-100 border-slate-600 border-2 rounded-2xl p-6 w-full max-w-lg my-auto max-h-[90vh] overflow-y-auto"
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
