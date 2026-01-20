@@ -1,37 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { Project, Meeting } from "../types";
-import { mockProjects } from "../data/mockProjects";
+import { Project, Meeting, CreateProjectDto, CreateMeetingDto } from "../types";
+import { projectService,meetingService } from "../service/service";
 import { Button } from "../components/Button";
 import { ProjectList } from "../components/ProjectList";
 import { Modal } from "../components/PopUp";
 import { Form } from "../components/Form";
 
 export function ProjectsPage() {
-  const [projects, setProjects] = useState<Project[]>(mockProjects);
-  const [meetings, setMeetings] = useState<Meeting[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [loading, setLoading] = useState(true);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
   const [selectedProjectForMeeting, setSelectedProjectForMeeting] = useState<string>("");
 
-  const handleToggleStatus = (id: string) => {
-    setProjects((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, isActive: !p.isActive } : p))
-    );
+  
+  useEffect(()=>{
+    loadProjects();
+  },[])
+
+  const loadProjects = async()=>{
+    try {
+      const data = await projectService.getAll()
+      setProjects(data)
+    } catch (error) {
+      console.error(error)
+    }finally{
+      setLoading(false)
+    }
+  }
+
+  const handleToggleStatus = async (id: string) => {
+    const project = projects.find((p) => p._id === id);
+    if (!project) return;
+    try {
+      const updated = await projectService.update(id, { status: !project.status });
+      setProjects((prev) => prev.map((p) => (p._id === id ? updated : p)));
+    } catch (error) {
+      console.error("Erro ao atualizar status:", error);
+    }
   };
 
-  const handleDelete = (id: string) => {
-    setProjects((prev) => prev.filter((p) => p.id !== id));
+  const handleDelete = async (id: string) => {
+    try {
+      await projectService.delete(id);
+      setProjects((prev) => prev.filter((p) => p._id !== id));
+    } catch (error) {
+      console.error("Erro ao deletar projeto:", error);
+    }
   };
 
-  const handleCreateProject = (data: Omit<Project, "id">) => {
-    const newProject: Project = {
-      id: Date.now().toString(),
-      ...data,
-    };
-    setProjects((prev) => [...prev, newProject]);
+  const handleCreateProject = async (data: CreateProjectDto) => {
+    try {
+      const newProject = await projectService.create(data);
+      setProjects((prev) => [...prev, newProject]);
+    } catch (error) {
+      console.error("Erro ao criar projeto:", error);
+    }
   };
 
   const handleNewMeeting = (projectId: string) => {
@@ -39,6 +66,22 @@ export function ProjectsPage() {
     setIsMeetingModalOpen(true);
   };
 
+  const handleCreateMeeting = async (data: CreateMeetingDto) => {
+    try {
+      await meetingService.create(data);
+      setIsMeetingModalOpen(false);
+    } catch (error) {
+      console.error("Erro ao criar reunião:", error);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="max-w-6xl mx-auto px-6 py-8 text-center">
+        <p className="text-gray-500">Carregando projetos...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
@@ -70,7 +113,7 @@ export function ProjectsPage() {
           projects={projects}
           selectedProjectId={selectedProjectForMeeting}
           onClose={() => setIsMeetingModalOpen(false)}
-          onSubmit={() => console.log("Nova reunião criada")}
+          onSubmit={handleCreateMeeting}
         />
       </Modal>
     </div>

@@ -14,14 +14,14 @@ interface ProjectCardProps {
 export function ProjectCard({ project, onToggleStatus, onDelete, onNewMeeting }: ProjectCardProps) {
   const menuItems = [
     {
-      label: project.isActive ? "Desativar" : "Ativar",
+      label: project.status ? "Desativar" : "Ativar",
       icon: <ToggleRight className="w-4 h-4" />,
-      onClick: () => onToggleStatus(project.id),
+      onClick: () => onToggleStatus(project._id),
     },
     {
       label: "Excluir",
       icon: <Trash2 className="w-4 h-4" />,
-      onClick: () => onDelete(project.id),
+      onClick: () => onDelete(project._id),
       variant: "danger" as const,
     },
   ];
@@ -31,8 +31,8 @@ export function ProjectCard({ project, onToggleStatus, onDelete, onNewMeeting }:
       <div className="flex items-start justify-between mb-3">
         <h3 className="font-bold text-slate-900 text-xl">{project.name}</h3>
         <div className="flex items-center gap-2">
-          <Badge variant={project.isActive ? "success" : "warning"}>
-            {project.isActive ? "Ativo" : "Pausado"}
+          <Badge variant={project.status ? "success" : "warning"}>
+            {project.status ? "Ativo" : "Pausado"}
           </Badge>
           <DropdownMenu items={menuItems} />
         </div>
@@ -46,7 +46,7 @@ export function ProjectCard({ project, onToggleStatus, onDelete, onNewMeeting }:
           size="sm"
           leftIcon={<Plus className="w-4 h-4" />}
           className="h-10"
-          onClick={() => onNewMeeting(project.id)}
+          onClick={() => onNewMeeting(project._id)}
         >
           Nova reunião
         </Button>

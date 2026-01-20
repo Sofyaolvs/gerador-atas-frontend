@@ -1,15 +1,49 @@
 export interface Project {
-  id: string;
+  _id: string;
   name: string;
   description: string;
-  isActive: boolean;
+  status: boolean;
+  created_at?: Date;
+}
+
+export interface CreateProjectDto {
+  name: string;
+  description: string;
+  status: boolean;
 }
 
 export interface Meeting {
-  id: string;
+  _id: string;
   projectId: string;
-  date: string;
   participants: string[];
-  topics: string[];
-  nextMeetingTasks: string[];
+  date: Date;
+  topics: string;
+  pending_tasks: string;
+  created_at?: Date;
+}
+
+export interface CreateMeetingDto {
+  projectId: string;
+  participants: string[];
+  date: string;
+  topics: string;
+  pending_tasks: string;
+}
+
+export interface Summary {
+  _id: string;
+  meetingId: string;
+  meetingData: Meeting;
+  summary: string;
+  created_at: Date;
+}
+
+export interface CreateSummaryDto {
+  meetingId: string;
+}
+
+export interface SummaryResponse {
+  success: boolean;
+  data?: Summary;
+  message?: string;
 }

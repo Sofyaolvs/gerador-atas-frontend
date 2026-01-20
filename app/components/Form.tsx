@@ -35,13 +35,13 @@ export function Form({ type, onClose, onSubmit, projects = [], selectedProjectId
     e.preventDefault();
     onSubmit(
       type === "project"
-        ? { name: data.name, description: data.description, isActive: data.status === "ativo" }
+        ? { name: data.name, description: data.description, status: data.status === "ativo" }
         : {
             projectId: data.projectId,
             date: data.date,
             participants: data.participants.split("\n").filter(Boolean),
-            topics: data.topics.split("\n").filter(Boolean),
-            nextMeetingTasks: data.tasks.split("\n").filter(Boolean),
+            topics: data.topics,
+            pending_tasks: data.tasks,
           }
     );
     onClose();
@@ -79,7 +79,7 @@ export function Form({ type, onClose, onSubmit, projects = [], selectedProjectId
             <select value={data.projectId} onChange={set("projectId")} className={inputClass} required>
               <option value="">Selecione um projeto</option>
               {projects.map((p) => (
-                <option key={p.id} value={p.id}>{p.name}</option>
+                <option key={p._id} value={p._id}>{p.name}</option>
               ))}
             </select>
           </Field>

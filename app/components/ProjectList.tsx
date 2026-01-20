@@ -21,7 +21,7 @@ export function ProjectList({ projects, onToggleStatus, onDelete, onNewMeeting }
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
       {projects.map((project) => (
         <ProjectCard
-          key={project.id}
+          key={project._id}
           project={project}
           onToggleStatus={onToggleStatus}
           onDelete={onDelete}
