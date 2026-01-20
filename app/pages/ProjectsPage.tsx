@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Plus } from "lucide-react";
-import { Project, Meeting, CreateProjectDto, CreateMeetingDto, Summary } from "../types";
+import { Plus, FileText } from "lucide-react";
+import { Project, CreateProjectDto, CreateMeetingDto, Summary } from "../types";
 import { projectService, meetingService, summaryService } from "../service/service";
 import { Button } from "../components/Button";
 import { ProjectList } from "../components/ProjectList";
@@ -10,7 +10,11 @@ import { Modal } from "../components/PopUp";
 import { Form } from "../components/Form";
 import { SummaryModal } from "../components/SummaryModal";
 
-export function ProjectsPage() {
+interface ProjectsPageProps {
+  onGoToHistory: () => void;
+}
+
+export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
@@ -20,32 +24,22 @@ export function ProjectsPage() {
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  
+
   useEffect(()=>{
     loadProjects();
   },[])
 
-  const loadProjects = async()=>{
+  const loadProjects = async () => {
     try {
-      const data = await projectService.getAll()
-      setProjects(data)
+      const data = await projectService.getAll();
+      setProjects(data);
     } catch (error) {
-      console.error(error)
-    }finally{
-      setLoading(false)
-    }
-  }
-
-  const handleToggleStatus = async (id: string) => {
-    const project = projects.find((p) => p._id === id);
-    if (!project) return;
-    try {
-      const updated = await projectService.update(id, { status: !project.status });
-      setProjects((prev) => prev.map((p) => (p._id === id ? updated : p)));
-    } catch (error) {
-      console.error("Erro ao atualizar status:", error);
+      console.error(error);
+    } finally {
+      setLoading(false);
     }
   };
+
 
   const handleDelete = async (id: string) => {
     try {
@@ -104,20 +98,25 @@ export function ProjectsPage() {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h1 className="text-2xl font-semibold text-gray-900">Projetos</h1>
           <p className="text-gray-500 text-sm mt-1">Projetos atuais:</p>
         </div>
-        <Button variant="primary" size="lg" onClick={() => setIsProjectModalOpen(true)}>
-          <Plus className="w-4 h-4 mr-2" />
-          Novo Projeto
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <Button variant="secondary" size="md" onClick={onGoToHistory}>
+            Histórico de Atas
+          </Button>
+          <Button variant="primary" size="md" onClick={() => setIsProjectModalOpen(true)}>
+            <Plus className="w-4 h-4 mr-2" />
+            Novo Projeto
+          </Button>
+        </div>
       </div>
 
       <ProjectList
         projects={projects}
-        onToggleStatus={handleToggleStatus}
+        // onToggleStatus={handleToggleStatus}
         onDelete={handleDelete}
         onNewMeeting={handleNewMeeting}
       />
@@ -129,7 +128,6 @@ export function ProjectsPage() {
       <Modal open={isMeetingModalOpen} onClose={() => setIsMeetingModalOpen(false)}>
         <Form
           type="meeting"
-          projects={projects}
           selectedProjectId={selectedProjectForMeeting}
           onClose={() => setIsMeetingModalOpen(false)}
           onSubmit={handleCreateMeeting}

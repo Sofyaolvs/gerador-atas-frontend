@@ -3,12 +3,12 @@ import { ProjectCard } from "./ProjectCard";
 
 interface ProjectListProps {
   projects: Project[];
-  onToggleStatus: (id: string) => void;
+  // onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
   onNewMeeting: (projectId: string) => void;
 }
 
-export function ProjectList({ projects, onToggleStatus, onDelete, onNewMeeting }: ProjectListProps) {
+export function ProjectList({ projects, onDelete, onNewMeeting }: ProjectListProps) {
   if (projects.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500">
@@ -23,7 +23,7 @@ export function ProjectList({ projects, onToggleStatus, onDelete, onNewMeeting }
         <ProjectCard
           key={project._id}
           project={project}
-          onToggleStatus={onToggleStatus}
+          // onToggleStatus={onToggleStatus}
           onDelete={onDelete}
           onNewMeeting={onNewMeeting}
         />

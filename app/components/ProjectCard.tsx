@@ -6,18 +6,18 @@ import { DropdownMenu } from "./DropdownMenu";
 
 interface ProjectCardProps {
   project: Project;
-  onToggleStatus: (id: string) => void;
+  // onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
   onNewMeeting: (projectId: string) => void;
 }
 
-export function ProjectCard({ project, onToggleStatus, onDelete, onNewMeeting }: ProjectCardProps) {
+export function ProjectCard({ project, onDelete, onNewMeeting }: ProjectCardProps) {
   const menuItems = [
-    {
-      label: project.status ? "Desativar" : "Ativar",
-      icon: <ToggleRight className="w-4 h-4" />,
-      onClick: () => onToggleStatus(project._id),
-    },
+    // {
+    //   label: project.status ? "Desativar" : "Ativar",
+    //   icon: <ToggleRight className="w-4 h-4" />,
+    //   onClick: () => onToggleStatus(project._id),
+    // },
     {
       label: "Excluir",
       icon: <Trash2 className="w-4 h-4" />,
@@ -31,9 +31,6 @@ export function ProjectCard({ project, onToggleStatus, onDelete, onNewMeeting }:
       <div className="flex items-start justify-between mb-3">
         <h3 className="font-bold text-slate-900 text-xl">{project.name}</h3>
         <div className="flex items-center gap-2">
-          <Badge variant={project.status ? "success" : "warning"}>
-            {project.status ? "Ativo" : "Pausado"}
-          </Badge>
           <DropdownMenu items={menuItems} />
         </div>
       </div>

@@ -66,12 +66,12 @@ export function Form({ type, onClose, onSubmit, projects = [], selectedProjectId
           <Field label="Descrição">
             <textarea value={data.description} onChange={set("description")} rows={3} className={inputClass} placeholder="Descreva o projeto..." required />
           </Field>
-          <Field label="Status">
+          {/* <Field label="Status">
             <select value={data.status} onChange={set("status")} className={inputClass}>
               <option value="ativo">Ativo</option>
               <option value="pausado">Pausado</option>
             </select>
-          </Field>
+          </Field> */}
         </>
       ) : (
         <>

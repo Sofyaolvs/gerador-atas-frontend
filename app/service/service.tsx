@@ -3,6 +3,7 @@ import {
   CreateProjectDto,
   Meeting,
   CreateMeetingDto,
+  Summary,
   SummaryResponse,
 } from "../types";
 
@@ -27,17 +28,6 @@ export const projectService = {
 
   getById: async (id: string): Promise<Project> => {
     const res = await fetch(`${API_URL}/project/${id}`);
-    return res.json();
-  },
-
-  update: async (id: string, data: Partial<CreateProjectDto>): Promise<Project> => {
-    const res = await fetch(`${API_URL}/project/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
     return res.json();
   },
 
@@ -85,5 +75,19 @@ export const summaryService = {
       body: JSON.stringify({ meetingId }),
     });
     return res.json();
+  },
+
+  getAll: async (): Promise<Summary[]> => {
+    const res = await fetch(`${API_URL}/summary`);
+    return res.json();
+  },
+
+  getById: async (id: string): Promise<Summary> => {
+    const res = await fetch(`${API_URL}/summary/${id}`);
+    return res.json();
+  },
+
+  delete: async (id: string): Promise<void> => {
+    await fetch(`${API_URL}/summary/${id}`, { method: "DELETE" });
   },
 };
