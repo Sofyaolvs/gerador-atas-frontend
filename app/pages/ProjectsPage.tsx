@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
-import { Project, Meeting, CreateProjectDto, CreateMeetingDto } from "../types";
-import { projectService,meetingService } from "../service/service";
+import { Project, Meeting, CreateProjectDto, CreateMeetingDto, Summary } from "../types";
+import { projectService, meetingService, summaryService } from "../service/service";
 import { Button } from "../components/Button";
 import { ProjectList } from "../components/ProjectList";
 import { Modal } from "../components/PopUp";
 import { Form } from "../components/Form";
+import { SummaryModal } from "../components/SummaryModal";
 
 export function ProjectsPage() {
   const [projects, setProjects] = useState<Project[]>([]);
@@ -15,6 +16,9 @@ export function ProjectsPage() {
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isMeetingModalOpen, setIsMeetingModalOpen] = useState(false);
   const [selectedProjectForMeeting, setSelectedProjectForMeeting] = useState<string>("");
+  const [generatedSummary, setGeneratedSummary] = useState<Summary | null>(null);
+  const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   
   useEffect(()=>{
@@ -68,10 +72,25 @@ export function ProjectsPage() {
 
   const handleCreateMeeting = async (data: CreateMeetingDto) => {
     try {
-      await meetingService.create(data);
+      setIsGenerating(true);
       setIsMeetingModalOpen(false);
+
+      const meeting = await meetingService.create(data);
+
+      const summaryResponse = await summaryService.generate(meeting._id);
+
+      if (summaryResponse.success && summaryResponse.data) {
+        setGeneratedSummary(summaryResponse.data);
+        setIsSummaryModalOpen(true);
+      } else {
+        console.error("Erro ao gerar ata:", summaryResponse.message);
+        alert('Erro ao gerar ata')
+      }
     } catch (error) {
       console.error("Erro ao criar reunião:", error);
+      alert("Erro ao criar reunião. Tente novamente.");
+    } finally {
+      setIsGenerating(false);
     }
   };
 
@@ -116,6 +135,22 @@ export function ProjectsPage() {
           onSubmit={handleCreateMeeting}
         />
       </Modal>
+
+      <Modal open={isGenerating} onClose={() => {}}>
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-violet-700 mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-violet-900 mb-2">Gerando Ata...</h2>
+        </div>
+      </Modal>
+
+      {generatedSummary && (
+        <Modal open={isSummaryModalOpen} onClose={() => setIsSummaryModalOpen(false)}>
+          <SummaryModal
+            summary={generatedSummary}
+            onClose={() => setIsSummaryModalOpen(false)}
+          />
+        </Modal>
+      )}
     </div>
   );
 }

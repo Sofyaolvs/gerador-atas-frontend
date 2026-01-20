@@ -17,7 +17,7 @@ export function Modal({ open, onClose, title, children }: ModalProps) {
       onClick={onClose}
     >
       <div
-        className="bg-slate-100  border-slate-600 border-2 rounded-2xl p-6 w-full max-w-lg"
+        className="bg-slate-100 border-slate-600 border-2 rounded-2xl p-6 w-full max-w-lg mx-4"
         onClick={(e) => e.stopPropagation()}
       >
         {title && (
