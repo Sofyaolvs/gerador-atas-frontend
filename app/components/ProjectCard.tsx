@@ -27,7 +27,7 @@ export function ProjectCard({ project, onDelete, onNewMeeting }: ProjectCardProp
   ];
 
   return (
-    <div className="bg-slate-100 border-2 border-violet-700 rounded-2xl p-5 hover:shadow-md transition-shadow">
+    <div className="bg-slate-100 border-2 border-violet-700 rounded-2xl p-5 hover:shadow-md transition-shadow h-full flex flex-col">
       <div className="flex items-start justify-between mb-3">
         <h3 className="font-bold text-slate-900 text-xl">{project.name}</h3>
         <div className="flex items-center gap-2">
@@ -35,9 +35,9 @@ export function ProjectCard({ project, onDelete, onNewMeeting }: ProjectCardProp
         </div>
       </div>
 
-      <p className="text-slate-800 text-sm mb-4 line-clamp-2">{project.description}</p>
+      <p className="text-slate-800 text-sm mb-4 line-clamp-2 flex-1">{project.description}</p>
 
-      <div className="flex justify-end pt-3 border-t border-gray-100">
+      <div className="flex justify-end pt-3 border-t border-gray-100 mt-auto">
         <Button
           variant="primary"
           size="sm"

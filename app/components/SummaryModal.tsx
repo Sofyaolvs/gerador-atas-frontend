@@ -2,6 +2,7 @@
 
 import { X, Download, Copy, Check } from "lucide-react";
 import { useState } from "react";
+import ReactMarkdown from "react-markdown";
 import { Summary } from "../types";
 import { Button } from "./Button";
 
@@ -28,10 +29,8 @@ export function SummaryModal({ summary, onClose }: SummaryModalProps) {
         </button>
       </div>
 
-      <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 max-h-96 overflow-y-auto">
-        <pre className="whitespace-pre-wrap text-sm text-slate-800 font-sans">
-          {summary.summary}
-        </pre>
+      <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 max-h-96 overflow-y-auto prose prose-sm prose-slate max-w-none">
+        <ReactMarkdown>{summary.summary}</ReactMarkdown>
       </div>
 
       <div className="flex gap-3 pt-4">
