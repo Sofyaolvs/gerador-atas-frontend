@@ -9,6 +9,7 @@ import { ProjectList } from "../components/ProjectList";
 import { Modal } from "../components/PopUp";
 import { Form } from "../components/Form";
 import { SummaryModal } from "../components/SummaryModal";
+import { ChatModal } from "../components/ChatModal";
 
 interface ProjectsPageProps {
   onGoToHistory: () => void;
@@ -23,6 +24,7 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
   const [generatedSummary, setGeneratedSummary] = useState<Summary | null>(null);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
 
 
   useEffect(()=>{
@@ -64,6 +66,10 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
     setIsMeetingModalOpen(true);
   };
 
+  const handleOpenChat = () => {
+    setIsChatModalOpen(true);
+  };
+
   const handleCreateMeeting = async (data: CreateMeetingDto) => {
     try {
       setIsGenerating(true);
@@ -96,6 +102,11 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
     );
   }
 
+  const handleStartChat = (projectId: string) => {
+    // TODO: Implementar abertura do chat
+    console.log("Abrir chat para projeto:", projectId);
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -119,6 +130,7 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
         // onToggleStatus={handleToggleStatus}
         onDelete={handleDelete}
         onNewMeeting={handleNewMeeting}
+        onOpenChat={handleOpenChat}
       />
 
       <Modal open={isProjectModalOpen} onClose={() => setIsProjectModalOpen(false)}>
@@ -134,6 +146,12 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
           onSubmit={handleCreateMeeting}
         />
       </Modal>
+
+      <Modal open={isChatModalOpen} onClose={() => setIsChatModalOpen(false)}>
+        <ChatModal/>
+      </Modal>
+
+
 
       <Modal open={isGenerating} onClose={() => {}}>
         <div className="text-center py-8">

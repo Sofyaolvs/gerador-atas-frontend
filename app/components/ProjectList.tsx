@@ -6,9 +6,10 @@ interface ProjectListProps {
   // onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
   onNewMeeting: (projectId: string) => void;
+  onOpenChat: (projectId: string) => void;
 }
 
-export function ProjectList({ projects, onDelete, onNewMeeting }: ProjectListProps) {
+export function ProjectList({ projects, onDelete, onNewMeeting, onOpenChat }: ProjectListProps) {
   if (projects.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500">
@@ -26,6 +27,7 @@ export function ProjectList({ projects, onDelete, onNewMeeting }: ProjectListPro
           // onToggleStatus={onToggleStatus}
           onDelete={onDelete}
           onNewMeeting={onNewMeeting}
+          onOpenChat={onOpenChat}
         />
       ))}
     </div>

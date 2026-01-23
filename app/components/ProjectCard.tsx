@@ -1,4 +1,4 @@
-import { Trash2, ToggleRight, Plus } from "lucide-react";
+import { Trash2, ToggleRight, Plus, MessageCircleQuestionMark } from "lucide-react";
 import { Project } from "../types";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
@@ -9,9 +9,10 @@ interface ProjectCardProps {
   // onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
   onNewMeeting: (projectId: string) => void;
+  onOpenChat: (projectId: string) => void;
 }
 
-export function ProjectCard({ project, onDelete, onNewMeeting }: ProjectCardProps) {
+export function ProjectCard({ project, onDelete, onNewMeeting, onOpenChat }: ProjectCardProps) {
   const menuItems = [
     // {
     //   label: project.status ? "Desativar" : "Ativar",
@@ -39,6 +40,16 @@ export function ProjectCard({ project, onDelete, onNewMeeting }: ProjectCardProp
 
       <div className="flex justify-end pt-3 border-t border-gray-100 mt-auto">
         <Button
+          variant="secondary"
+          size="sm"
+          leftIcon={<MessageCircleQuestionMark className="w-4 h-4"/>}
+          className="h-10 mr-4 border-2 border-violet-700"
+          onClick={() => onOpenChat(project._id)}
+        >
+          Chat
+        </Button>
+
+        <Button
           variant="primary"
           size="sm"
           leftIcon={<Plus className="w-4 h-4" />}
@@ -47,6 +58,7 @@ export function ProjectCard({ project, onDelete, onNewMeeting }: ProjectCardProp
         >
           Nova reunião
         </Button>
+
       </div>
     </div>
   );
