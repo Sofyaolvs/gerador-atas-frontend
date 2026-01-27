@@ -7,6 +7,8 @@ import { projectService, summaryService } from "../service/service";
 import { Modal } from "../components/PopUp";
 import { SummaryModal } from "../components/SummaryModal";
 import { SummaryHistory } from "../components/SummaryHistory";
+import { Button } from "../components/Button";
+import { UploadArea } from "../components/UploadArea";
 
 interface SummaryHistoryPageProps {
   onBack: () => void;
@@ -18,6 +20,9 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
   const [loading, setLoading] = useState(true);
   const [selectedSummary, setSelectedSummary] = useState<Summary | null>(null);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
+  const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+  const [file, setFile] = useState<string>();
+  const [fileEnter, setFileEnter] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -73,6 +78,11 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
           <h1 className="text-2xl font-semibold text-gray-900">Histórico de Atas</h1>
           <p className="text-gray-500 text-sm mt-1">Todas as atas geradas</p>
         </div>
+      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+          <Button variant="primary" size="md" onClick={() => setIsUploadModalOpen(true)}>
+            Upload de ata
+          </Button>
+        </div>
       </div>
 
       <SummaryHistory
@@ -90,6 +100,10 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
           />
         </Modal>
       )}
+
+      <Modal open={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)}>
+        <UploadArea onClose={() => setIsUploadModalOpen(false)} onSubmit={() => {}} />
+      </Modal>
     </div>
   );
 }
