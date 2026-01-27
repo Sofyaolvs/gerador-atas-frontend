@@ -25,7 +25,7 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
-
+  const [selectedProjectForChat, setSelectedProjectForChat] = useState<Project | null>(null);
 
   useEffect(()=>{
     loadProjects();
@@ -66,7 +66,9 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
     setIsMeetingModalOpen(true);
   };
 
-  const handleOpenChat = () => {
+  const handleOpenChat = (projectId: string) => {
+    const project = projects.find((p) => p._id === projectId);
+    setSelectedProjectForChat(project || null);
     setIsChatModalOpen(true);
   };
 
@@ -101,11 +103,6 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
       </div>
     );
   }
-
-  const handleStartChat = (projectId: string) => {
-    // TODO: Implementar abertura do chat
-    console.log("Abrir chat para projeto:", projectId);
-  };
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
@@ -148,7 +145,13 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
       </Modal>
 
       <Modal open={isChatModalOpen} onClose={() => setIsChatModalOpen(false)}>
-        <ChatModal/>
+        {selectedProjectForChat && (
+          <ChatModal
+            projectId={selectedProjectForChat._id}
+            projectName={selectedProjectForChat.name}
+            onClose={() => setIsChatModalOpen(false)}
+          />
+        )}
       </Modal>
 
 

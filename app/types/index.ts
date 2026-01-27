@@ -47,3 +47,39 @@ export interface SummaryResponse {
   data?: Summary;
   message?: string;
 }
+
+export interface ChatMessage {
+  role: "user" | "assistant";
+  content: string;
+}
+
+export interface SendMessageDto {
+  projectId: string;
+  message: string;
+  conversationId?: string;
+}
+
+export interface ChatResponse {
+  conversationId: string;
+  projectId: string;
+  message: string;
+  response: string;
+  created_at: string;
+}
+
+export interface ConversationHistory {
+  conversationId: string;
+  projectId: string;
+  messages: Array<{
+    role: "user" | "assistant";
+    content: string;
+    created_at: string;
+  }>;
+}
+
+export interface Conversation {
+  conversationId: string;
+  projectId: string;
+  created_at: string;
+  lastMessage?: string;
+}

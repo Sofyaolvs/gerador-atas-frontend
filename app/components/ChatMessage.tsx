@@ -1,4 +1,6 @@
+"use client";
 
+import ReactMarkdown from "react-markdown";
 
 interface ChatMessageProps {
   role: "user" | "assistant";
@@ -6,9 +8,10 @@ interface ChatMessageProps {
 }
 
 export function ChatMessage({ role, content }: ChatMessageProps) {
-    const isUser = role === "user";
-    return (
- <div
+  const isUser = role === "user";
+
+  return (
+    <div
       className={
         "flex w-full animate-fade-in-up" +
         (isUser ? " justify-end" : " justify-start")
@@ -24,11 +27,17 @@ export function ChatMessage({ role, content }: ChatMessageProps) {
       >
         {!isUser && (
           <div className="mb-1 text-xs font-bold text-violet-800">
-            atazinha
+            Atinha
           </div>
         )}
-        <p className="whitespace-pre-wrap text-sm leading-relaxed">{content}</p>
+        {isUser ? (
+          <p className="whitespace-pre-wrap text-sm leading-relaxed">{content}</p>
+        ) : (
+          <div className="prose prose-sm prose-violet max-w-none text-sm leading-relaxed">
+            <ReactMarkdown>{content}</ReactMarkdown>
+          </div>
+        )}
       </div>
     </div>
-    );
+  );
 }

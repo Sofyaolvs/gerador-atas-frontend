@@ -5,6 +5,10 @@ import {
   CreateMeetingDto,
   Summary,
   SummaryResponse,
+  SendMessageDto,
+  ChatResponse,
+  ConversationHistory,
+  Conversation,
 } from "../types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -89,5 +93,46 @@ export const summaryService = {
 
   delete: async (id: string): Promise<void> => {
     await fetch(`${API_URL}/summary/${id}`, { method: "DELETE" });
+  },
+};
+
+export const chatService = {
+  sendMessage: async (data: SendMessageDto): Promise<ChatResponse> => {
+    const res = await fetch(`${API_URL}/chat`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) {
+      throw new Error("Erro ao enviar mensagem");
+    }
+    return res.json();
+  },
+
+  getConversationHistory: async (conversationId: string): Promise<ConversationHistory> => {
+    const res = await fetch(`${API_URL}/chat/conversation/${conversationId}`);
+    if (!res.ok) {
+      throw new Error("Erro ao carregar histórico");
+    }
+    return res.json();
+  },
+
+  getProjectConversations: async (projectId: string): Promise<Conversation[]> => {
+    const res = await fetch(`${API_URL}/chat/project/${projectId}`);
+    if (!res.ok) {
+      throw new Error("Erro ao carregar conversas");
+    }
+    return res.json();
+  },
+
+  deleteConversation: async (conversationId: string): Promise<void> => {
+    const res = await fetch(`${API_URL}/chat/conversation/${conversationId}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      throw new Error("Erro ao deletar conversa");
+    }
   },
 };
