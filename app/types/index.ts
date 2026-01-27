@@ -83,3 +83,16 @@ export interface Conversation {
   created_at: string;
   lastMessage?: string;
 }
+
+export interface UploadAtaDto {
+  file: File;
+  projectId: string;
+  meetingDate?: string;
+  participants?: string[];
+}
+
+export interface UploadAtaResponse {
+  success: boolean;
+  data?: Summary;
+  message?: string;
+}

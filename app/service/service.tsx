@@ -9,6 +9,8 @@ import {
   ChatResponse,
   ConversationHistory,
   Conversation,
+  UploadAtaDto,
+  UploadAtaResponse,
 } from "../types";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -79,6 +81,35 @@ export const summaryService = {
       body: JSON.stringify({ meetingId }),
     });
     return res.json();
+  },
+
+  upload: async (data: UploadAtaDto): Promise<UploadAtaResponse> => {
+    const formData = new FormData();
+
+    formData.append("file", data.file);
+    formData.append("projectId", data.projectId);
+
+    if (data.meetingDate) {
+      const isoDate = new Date(data.meetingDate).toISOString();
+      formData.append("meetingDate", isoDate);
+    }
+
+    if (data.participants && data.participants.length > 0) {
+      data.participants.forEach((p) => formData.append("participants", p));
+    }
+
+    const res = await fetch(`${API_URL}/summary/upload`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const responseData = await res.json();
+
+    if (!res.ok) {
+      throw new Error(responseData.message || "Erro ao enviar ata");
+    }
+
+    return responseData;
   },
 
   getAll: async (): Promise<Summary[]> => {

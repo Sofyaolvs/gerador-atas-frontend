@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { ArrowLeft } from "lucide-react";
-import { Project, Summary } from "../types";
+import { Project, Summary, UploadAtaDto } from "../types";
 import { projectService, summaryService } from "../service/service";
 import { Modal } from "../components/PopUp";
 import { SummaryModal } from "../components/SummaryModal";
@@ -21,8 +21,6 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
   const [selectedSummary, setSelectedSummary] = useState<Summary | null>(null);
   const [isSummaryModalOpen, setIsSummaryModalOpen] = useState(false);
   const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
-  const [file, setFile] = useState<string>();
-  const [fileEnter, setFileEnter] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -40,6 +38,13 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
       console.error(error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleUploadAta = async (data: UploadAtaDto) => {
+    const result = await summaryService.upload(data);
+    if (result.data) {
+      setSummaries((prev) => [result.data!, ...prev]);
     }
   };
 
@@ -102,7 +107,11 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
       )}
 
       <Modal open={isUploadModalOpen} onClose={() => setIsUploadModalOpen(false)}>
-        <UploadArea onClose={() => setIsUploadModalOpen(false)} onSubmit={() => {}} />
+        <UploadArea
+          projects={projects}
+          onClose={() => setIsUploadModalOpen(false)}
+          onSubmit={handleUploadAta}
+        />
       </Modal>
     </div>
   );
