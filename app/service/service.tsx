@@ -90,8 +90,8 @@ export const summaryService = {
     formData.append("projectId", data.projectId);
 
     if (data.meetingDate) {
-      const isoDate = new Date(data.meetingDate).toISOString();
-      formData.append("meetingDate", isoDate);
+
+      formData.append("meetingDate", new Date(data.meetingDate).toISOString());
     }
 
     if (data.participants && data.participants.length > 0) {

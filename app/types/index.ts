@@ -32,9 +32,14 @@ export interface CreateMeetingDto {
 
 export interface Summary {
   _id: string;
-  meetingId: string;
-  meetingData: Meeting;
+  meetingId?: string;
+  meetingData?: Meeting;
+  projectId?: string;
   summary: string;
+  sourceType?: "generated" | "uploaded";
+  originalFileName?: string;
+  meetingDate?: Date;
+  participants?: string[];
   created_at: Date;
 }
 

@@ -12,12 +12,14 @@ interface SummaryHistoryProps {
 }
 
 export function SummaryHistory({ summaries, projects, onView, onDelete }: SummaryHistoryProps) {
-  const getProjectName = (projectId: string) => {
+  const getProjectName = (projectId?: string) => {
+    if (!projectId) return "Projeto não encontrado";
     const project = projects.find((p) => p._id === projectId);
     return project?.name || "Projeto não encontrado";
   };
 
-  const formatDate = (date: Date) => {
+  const formatDate = (date?: Date) => {
+    if (!date) return "";
     return new Date(date).toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
@@ -42,10 +44,12 @@ export function SummaryHistory({ summaries, projects, onView, onDelete }: Summar
         >
           <div className="flex-1">
             <h4 className="font-semibold text-slate-900">
-              {getProjectName(summary.meetingData?.projectId)}
+              {getProjectName(summary.projectId || summary.meetingData?.projectId)}
             </h4>
             <p className="text-sm text-slate-600">
-              Reunião em {formatDate(summary.meetingData?.date)}
+              {summary.meetingDate || summary.meetingData?.date
+                ? `Reunião em ${formatDate(summary.meetingDate || summary.meetingData?.date)}`
+                : summary.originalFileName || "Ata enviada"}
             </p>
           </div>
 
