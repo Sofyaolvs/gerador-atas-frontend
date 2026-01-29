@@ -127,7 +127,11 @@ export function SummaryModal({ summary, onClose }: SummaryModalProps) {
       </div>
 
       <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 max-h-96 overflow-y-auto prose prose-sm prose-slate max-w-none">
-        <ReactMarkdown>{summary.summary}</ReactMarkdown>
+        <ReactMarkdown>
+          {summary.sourceType === "uploaded"
+            ? summary.summary.replace(/\n/g, "  \n")
+            : summary.summary}
+        </ReactMarkdown>
       </div>
 
       <div className="flex gap-3 pt-4">
