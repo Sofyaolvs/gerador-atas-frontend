@@ -1,4 +1,4 @@
-import { Trash2, ToggleRight, Plus, MessageCircleQuestionMark } from "lucide-react";
+import { Trash2, ToggleRight, Plus, MessageCircleQuestionMark, History } from "lucide-react";
 import { Project } from "../types";
 import { Badge } from "./Badge";
 import { Button } from "./Button";
@@ -10,9 +10,10 @@ interface ProjectCardProps {
   onDelete: (id: string) => void;
   onNewMeeting: (projectId: string) => void;
   onOpenChat: (projectId: string) => void;
+  onGoToHistory: (projectId: string) => void;
 }
 
-export function ProjectCard({ project, onDelete, onNewMeeting, onOpenChat }: ProjectCardProps) {
+export function ProjectCard({ project, onDelete, onNewMeeting, onOpenChat, onGoToHistory }: ProjectCardProps) {
   const menuItems = [
     // {
     //   label: project.status ? "Desativar" : "Ativar",
@@ -47,6 +48,15 @@ export function ProjectCard({ project, onDelete, onNewMeeting, onOpenChat }: Pro
           onClick={() => onOpenChat(project._id)}
         >
           Chat
+        </Button>
+
+        <Button
+        variant="secondary"
+        size="sm"
+        leftIcon={<History className="w-4 h-4"/>}
+        className="h-10 mr-4 border-2 border-violet-700"
+        onClick={() => onGoToHistory(project._id)}
+        > Histórico
         </Button>
 
         <Button

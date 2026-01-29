@@ -11,10 +11,11 @@ import { Button } from "../components/Button";
 import { UploadArea } from "../components/UploadArea";
 
 interface SummaryHistoryPageProps {
+  projectId: string;
   onBack: () => void;
 }
 
-export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
+export function SummaryHistoryPage({ projectId, onBack }: SummaryHistoryPageProps) {
   const [projects, setProjects] = useState<Project[]>([]);
   const [summaries, setSummaries] = useState<Summary[]>([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +34,11 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
         summaryService.getAll(),
       ]);
       setProjects(projectsData);
-      setSummaries(summariesData);
+      setSummaries(
+        summariesData.filter(
+          (s) => s.projectId === projectId || s.meetingData?.projectId === projectId
+        )
+      );
     } catch (error) {
       console.error(error);
     } finally {
@@ -72,22 +77,29 @@ export function SummaryHistoryPage({ onBack }: SummaryHistoryPageProps) {
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-8">
-      <div className="flex items-center gap-4 mb-6">
-        <button
-          onClick={onBack}
-          className="p-2 text-violet-700 hover:bg-violet-100 rounded-lg transition-colors"
-        >
-          <ArrowLeft className="w-6 h-6" />
-        </button>
-        <div>
-          <h1 className="text-2xl font-semibold text-gray-900">Histórico de Atas</h1>
-          <p className="text-gray-500 text-sm mt-1">Todas as atas geradas</p>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-4">
+          <button
+            onClick={onBack}
+            className="p-2 text-violet-700 hover:bg-violet-100 rounded-lg transition-colors"
+          >
+            <ArrowLeft className="w-6 h-6" />
+          </button>
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900">
+              Histórico de Atas
+              {projects.length > 0 && (
+                <span className="text-violet-700 ml-2">
+                   {projects.find((p) => p._id === projectId)?.name}
+                </span>
+              )}
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">Atas deste projeto</p>
+          </div>
         </div>
-      <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-          <Button variant="primary" size="md" onClick={() => setIsUploadModalOpen(true)}>
-            Upload de ata
-          </Button>
-        </div>
+        <Button variant="primary" size="md" onClick={() => setIsUploadModalOpen(true)}>
+          Upload de ata
+        </Button>
       </div>
 
       <SummaryHistory

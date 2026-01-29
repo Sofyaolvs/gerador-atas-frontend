@@ -20,7 +20,8 @@ export function SummaryHistory({ summaries, projects, onView, onDelete }: Summar
 
   const formatDate = (date?: Date) => {
     if (!date) return "";
-    return new Date(date).toLocaleDateString("pt-BR", {
+    const d = new Date(date);
+    return new Date(d.getTime() + d.getTimezoneOffset() * 60000).toLocaleDateString("pt-BR", {
       day: "2-digit",
       month: "2-digit",
       year: "numeric",

@@ -12,7 +12,7 @@ import { SummaryModal } from "../components/SummaryModal";
 import { ChatModal } from "../components/ChatModal";
 
 interface ProjectsPageProps {
-  onGoToHistory: () => void;
+  onGoToHistory: (projectId: string) => void;
 }
 
 export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
@@ -112,9 +112,6 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
           <p className="text-gray-500 text-sm mt-1">Projetos atuais:</p>
         </div>
         <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
-          <Button variant="secondary" size="md" onClick={onGoToHistory}>
-            Histórico de Atas
-          </Button>
           <Button variant="primary" size="md" onClick={() => setIsProjectModalOpen(true)}>
             <Plus className="w-4 h-4 mr-2" />
             Novo Projeto
@@ -124,10 +121,10 @@ export function ProjectsPage({ onGoToHistory }: ProjectsPageProps) {
 
       <ProjectList
         projects={projects}
-        // onToggleStatus={handleToggleStatus}
         onDelete={handleDelete}
         onNewMeeting={handleNewMeeting}
         onOpenChat={handleOpenChat}
+        onGoToHistory={(projectId) => onGoToHistory(projectId)}
       />
 
       <Modal open={isProjectModalOpen} onClose={() => setIsProjectModalOpen(false)}>

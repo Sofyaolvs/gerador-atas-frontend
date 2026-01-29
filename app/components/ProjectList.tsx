@@ -3,13 +3,13 @@ import { ProjectCard } from "./ProjectCard";
 
 interface ProjectListProps {
   projects: Project[];
-  // onToggleStatus: (id: string) => void;
   onDelete: (id: string) => void;
   onNewMeeting: (projectId: string) => void;
   onOpenChat: (projectId: string) => void;
+  onGoToHistory: (projectId: string) => void;
 }
 
-export function ProjectList({ projects, onDelete, onNewMeeting, onOpenChat }: ProjectListProps) {
+export function ProjectList({ projects, onDelete, onNewMeeting, onOpenChat, onGoToHistory }: ProjectListProps) {
   if (projects.length === 0) {
     return (
       <div className="text-center py-12 text-gray-500">
@@ -24,10 +24,10 @@ export function ProjectList({ projects, onDelete, onNewMeeting, onOpenChat }: Pr
         <ProjectCard
           key={project._id}
           project={project}
-          // onToggleStatus={onToggleStatus}
           onDelete={onDelete}
           onNewMeeting={onNewMeeting}
           onOpenChat={onOpenChat}
+          onGoToHistory={onGoToHistory}
         />
       ))}
     </div>

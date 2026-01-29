@@ -7,13 +7,22 @@ import { SummaryHistoryPage } from "./pages/SummaryHistoryPage";
 
 export default function Home() {
   const [currentPage, setCurrentPage] = useState<"projects" | "history">("projects");
+  const [selectedProjectId, setSelectedProjectId] = useState<string>("");
+
+  const handleGoToHistory = (projectId: string) => {
+    setSelectedProjectId(projectId);
+    setCurrentPage("history");
+  };
 
   return (
     <PageLayout>
       {currentPage === "projects" ? (
-        <ProjectsPage onGoToHistory={() => setCurrentPage("history")} />
+        <ProjectsPage onGoToHistory={handleGoToHistory} />
       ) : (
-        <SummaryHistoryPage onBack={() => setCurrentPage("projects")} />
+        <SummaryHistoryPage
+          projectId={selectedProjectId}
+          onBack={() => setCurrentPage("projects")}
+        />
       )}
     </PageLayout>
   );
